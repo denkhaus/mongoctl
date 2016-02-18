@@ -58,6 +58,7 @@ func main() {
 		cli.ShowAppHelp(ctx)
 	}
 	app.Commands = []cli.Command{
+		mongoctl.StatusCommand,
 		mongoctl.AddCommand,
 		mongoctl.RemoveCommand,
 		mongoctl.ClearCommand,

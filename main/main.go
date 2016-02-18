@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/denkhaus/mongoctl"
 	"github.com/sirupsen/logrus"
@@ -63,5 +64,5 @@ func main() {
 	}
 
 	logger.Infof("startup mongoctl %s", app.Version)
-
+	app.Run(os.Args)
 }

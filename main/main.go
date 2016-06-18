@@ -62,6 +62,8 @@ func main() {
 		mongoctl.AddCommand,
 		mongoctl.RemoveCommand,
 		mongoctl.ClearCommand,
+		mongoctl.BackupCommand,
+		mongoctl.RestoreCommand,
 	}
 
 	logger.Infof("startup mongoctl %s", app.Version)

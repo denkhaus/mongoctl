@@ -21,7 +21,7 @@ var AddCommand = cli.Command{
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "member, m",
-			Usage: "Member <host:port> to remove",
+			Usage: "Member <host:port> to add",
 			Value: "",
 		},
 		cli.BoolFlag{

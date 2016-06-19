@@ -7,7 +7,7 @@ import (
 	"github.com/denkhaus/mongoctl/mongoctl"
 	"github.com/sirupsen/logrus"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 )
 
 var (

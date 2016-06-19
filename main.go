@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/denkhaus/mongoctl"
+	"github.com/denkhaus/mongoctl/mongoctl"
 	"github.com/sirupsen/logrus"
 
 	"github.com/codegangsta/cli"

@@ -1,22 +1,21 @@
 package mongoctl
 
 import (
-	"os"
-
 	"gopkg.in/mgo.v2/bson"
 
-	"github.com/codegangsta/cli"
 	"github.com/juju/errors"
+	"github.com/urfave/cli"
 )
 
 var AddCommand = cli.Command{
 	Name:  "add",
 	Usage: "Add a replica set member",
-	Action: func(ctx *cli.Context) {
+	Action: func(ctx *cli.Context) error {
 		if err := addMember(ctx); err != nil {
 			logger.WithField("func", "add").Error(err)
-			os.Exit(1)
+			return err
 		}
+		return nil
 	},
 	Flags: []cli.Flag{
 		cli.StringFlag{

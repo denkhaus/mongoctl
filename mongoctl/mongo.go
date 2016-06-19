@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/codegangsta/cli"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/juju/errors"
+	"github.com/urfave/cli"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"

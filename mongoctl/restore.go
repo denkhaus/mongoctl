@@ -1,22 +1,21 @@
 package mongoctl
 
 import (
-	"os"
-
 	"gopkg.in/pipe.v2"
 
-	"github.com/codegangsta/cli"
 	"github.com/juju/errors"
+	"github.com/urfave/cli"
 )
 
 var RestoreCommand = cli.Command{
 	Name:  "restore",
 	Usage: "restore a mongodb backup",
-	Action: func(ctx *cli.Context) {
+	Action: func(ctx *cli.Context) error {
 		if err := restore(ctx); err != nil {
 			logger.WithField("func", "restore").Error(err)
-			os.Exit(1)
+			return err
 		}
+		return nil
 	},
 	Flags: []cli.Flag{
 		cli.StringFlag{

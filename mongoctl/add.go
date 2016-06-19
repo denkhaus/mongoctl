@@ -32,6 +32,8 @@ var AddCommand = cli.Command{
 }
 
 func addMember(ctx *cli.Context) error {
+	logger.Info("exec add")
+
 	memberHost := ctx.String("member")
 	if memberHost == "" {
 		return errors.New("no member host defined")

@@ -19,6 +19,8 @@ var StatusCommand = cli.Command{
 }
 
 func printStatus(ctx *cli.Context) error {
+	logger.Info("exec status")
+
 	session, err := sessionFromCtx(ctx)
 	if err != nil {
 		return errors.Annotate(err, "session from ctx")

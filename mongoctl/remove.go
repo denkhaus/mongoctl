@@ -27,6 +27,8 @@ var RemoveCommand = cli.Command{
 }
 
 func removeMember(ctx *cli.Context) error {
+	logger.Info("exec remove")
+
 	memberHost := ctx.String("member")
 	if memberHost == "" {
 		return errors.New("no member host defined")

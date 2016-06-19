@@ -28,6 +28,8 @@ var BackupCommand = cli.Command{
 }
 
 func backup(ctx *cli.Context) error {
+	logger.Info("exec backup")
+
 	outDir := ctx.String("output")
 	if outDir == "" {
 		return errors.New("output directory is not defined")
@@ -38,6 +40,10 @@ func backup(ctx *cli.Context) error {
 		return errors.Annotate(err, "find master")
 	}
 
+	logger.Infof("mongo master ip is: %s", res.Address)
+	logger.Infof("output directory is: %s", outDir)
+	logger.Info("startup mongodump")
+
 	p := pipe.Line(
 		pipe.Exec("/usr/bin/mongodump", "-h", res.Address, "-o", outDir),
 	)
@@ -47,6 +53,6 @@ func backup(ctx *cli.Context) error {
 		logger.Error(err)
 	}
 
-	logger.Info(output)
+	logger.Info(string(output))
 	return nil
 }

@@ -29,6 +29,8 @@ var RestoreCommand = cli.Command{
 }
 
 func restore(ctx *cli.Context) error {
+	logger.Info("exec restore")
+
 	inDir := ctx.String("input")
 	if inDir == "" {
 		return errors.New("input directory is not defined")
@@ -38,6 +40,9 @@ func restore(ctx *cli.Context) error {
 	if err != nil {
 		return errors.Annotate(err, "find master")
 	}
+	logger.Infof("mongo master ip is: %s", res.Address)
+	logger.Infof("input directory is: %s", inDir)
+	logger.Info("startup mongorestore")
 
 	p := pipe.Line(
 		pipe.Exec("/usr/bin/mongorestore", "-h", res.Address, "--dir", inDir),
@@ -48,6 +53,6 @@ func restore(ctx *cli.Context) error {
 		logger.Error(err)
 	}
 
-	logger.Info(output)
+	logger.Info(string(output))
 	return nil
 }

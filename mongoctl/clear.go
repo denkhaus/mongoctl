@@ -9,5 +9,6 @@ var ClearCommand = cli.Command{
 }
 
 func clearReplicaSet(ctx *cli.Context) {
+	logger.Info("exec clear")
 
 }

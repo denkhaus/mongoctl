@@ -1,24 +1,25 @@
 package mongoctl
 
 import (
-	"os"
-
-	"github.com/codegangsta/cli"
 	"github.com/juju/errors"
+	"github.com/urfave/cli"
 )
 
 var StatusCommand = cli.Command{
 	Name:  "status",
 	Usage: "print the replica status",
-	Action: func(ctx *cli.Context) {
-		if err := printStatus(ctx); err != nil {
+	Action: func(ctx *cli.Context) error {
+		if err := status(ctx); err != nil {
 			logger.WithField("func", "status").Error(err)
-			os.Exit(1)
+			return err
 		}
+		return nil
 	},
 }
 
-func printStatus(ctx *cli.Context) error {
+func status(ctx *cli.Context) error {
+	logger.Info("exec status")
+
 	session, err := sessionFromCtx(ctx)
 	if err != nil {
 		return errors.Annotate(err, "session from ctx")

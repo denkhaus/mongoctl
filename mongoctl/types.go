@@ -1,4 +1,4 @@
-package commands
+package mongoctl
 
 import (
 	"time"
@@ -29,6 +29,22 @@ type Host struct {
 	Tags         map[string]string `bson:"tags"`
 	SlaveDelay   int64             `bson:"slaveDelay"`
 	Votes        int64             `bson:"votes"`
+}
+
+// Config reports information about the configuration of a given mongo node
+type IsMasterResults struct {
+	// The following fields hold information about the specific mongodb node.
+	IsMaster  bool      `bson:"ismaster"`
+	Secondary bool      `bson:"secondary"`
+	Arbiter   bool      `bson:"arbiterOnly"`
+	Address   string    `bson:"me"`
+	LocalTime time.Time `bson:"localTime"`
+
+	// The following fields hold information about the replica set.
+	ReplicaSetName string   `bson:"setName"`
+	Addresses      []string `bson:"hosts"`
+	Arbiters       []string `bson:"arbiters"`
+	PrimaryAddress string   `bson:"primary"`
 }
 
 // rs.status()

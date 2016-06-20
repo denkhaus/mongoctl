@@ -1,36 +1,43 @@
-package commands
+package mongoctl
 
 import (
-	"os"
-
-	"github.com/codegangsta/cli"
-	"github.com/juju/errors"
 	"gopkg.in/mgo.v2/bson"
+
+	"github.com/juju/errors"
+	"github.com/urfave/cli"
 )
 
-var RemoveCommand = cli.Command{
-	Name:  "remove",
-	Usage: "Remove a replica set member",
-	Action: func(ctx *cli.Context) {
-		if err := removeMember(ctx); err != nil {
-			logger.WithField("func", "remove").Error(err)
-			os.Exit(1)
+var AddCommand = cli.Command{
+	Name:  "add",
+	Usage: "Add a replica set member",
+	Action: func(ctx *cli.Context) error {
+		if err := addMember(ctx); err != nil {
+			logger.WithField("func", "add").Error(err)
+			return err
 		}
+		return nil
 	},
 	Flags: []cli.Flag{
 		cli.StringFlag{
 			Name:  "member, m",
-			Usage: "Member <host:port> to remove",
+			Usage: "Member <host:port> to add",
 			Value: "",
+		},
+		cli.BoolFlag{
+			Name:  "arbitrator, a",
+			Usage: "Member is arbitrator",
 		},
 	},
 }
 
-func removeMember(ctx *cli.Context) error {
+func addMember(ctx *cli.Context) error {
+	logger.Info("exec add")
+
 	memberHost := ctx.String("member")
 	if memberHost == "" {
 		return errors.New("no member host defined")
 	}
+	arbitrator := ctx.Bool("arbitrator")
 
 	session, err := sessionFromCtx(ctx)
 	if err != nil {
@@ -52,29 +59,41 @@ func removeMember(ctx *cli.Context) error {
 	err = coll.Find(bson.M{}).One(&config)
 	if err != nil {
 		return errors.Annotate(err, "get replset config")
-
 	}
 
 	found := false
-	for i, member := range config.Members {
-		if member.Host == memberHost {
-			config.Members = append(config.Members[:i], config.Members[i+1:]...)
-			found = true
-			break
+	var max int64 = 0
+	for _, member := range config.Members {
+
+		if member.ID > max {
+			max = member.ID
+			if member.Host == memberHost {
+				found = true
+				break
+			}
 		}
 	}
 
-	if found {
+	if !found {
+		cfg := &Host{
+			ID:          max + 1,
+			Host:        memberHost,
+			ArbiterOnly: arbitrator,
+		}
+
 		config.Version++
+		config.Members = append(config.Members, cfg)
+
 		cmd := &bson.M{
 			"replSetReconfig": config,
 		}
+
 		result := bson.M{}
 		if err := session.DB("admin").Run(&cmd, &result); err != nil {
 			return errors.Annotate(err, "reconfig repl set")
 		}
 	} else {
-		return errors.Errorf("node %s not found in cluster", memberHost)
+		return errors.Errorf("node %s already found in cluster", memberHost)
 	}
 
 	return nil

@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/denkhaus/mongoctl/commands"
+	"github.com/denkhaus/mongoctl/mongoctl"
 	"github.com/sirupsen/logrus"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 )
 
 var (
@@ -58,10 +58,12 @@ func main() {
 		cli.ShowAppHelp(ctx)
 	}
 	app.Commands = []cli.Command{
-		commands.StatusCommand,
-		commands.AddCommand,
-		commands.RemoveCommand,
-		commands.ClearCommand,
+		mongoctl.StatusCommand,
+		mongoctl.AddCommand,
+		mongoctl.RemoveCommand,
+		mongoctl.ClearCommand,
+		mongoctl.BackupCommand,
+		mongoctl.RestoreCommand,
 	}
 
 	logger.Infof("startup mongoctl %s", app.Version)

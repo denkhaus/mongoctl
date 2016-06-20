@@ -1,21 +1,20 @@
 package mongoctl
 
 import (
-	"os"
-
-	"github.com/codegangsta/cli"
 	"github.com/juju/errors"
+	"github.com/urfave/cli"
 	"gopkg.in/mgo.v2/bson"
 )
 
 var RemoveCommand = cli.Command{
 	Name:  "remove",
 	Usage: "Remove a replica set member",
-	Action: func(ctx *cli.Context) {
+	Action: func(ctx *cli.Context) error {
 		if err := removeMember(ctx); err != nil {
 			logger.WithField("func", "remove").Error(err)
-			os.Exit(1)
+			return err
 		}
+		return nil
 	},
 	Flags: []cli.Flag{
 		cli.StringFlag{
@@ -27,6 +26,8 @@ var RemoveCommand = cli.Command{
 }
 
 func removeMember(ctx *cli.Context) error {
+	logger.Info("exec remove")
+
 	memberHost := ctx.String("member")
 	if memberHost == "" {
 		return errors.New("no member host defined")

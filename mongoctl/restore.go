@@ -52,6 +52,6 @@ func restore(ctx *cli.Context) error {
 		logger.Error(err)
 	}
 
-	logger.Info(string(output))
+	LogCombinedLines("restore result", logger, output)
 	return nil
 }

@@ -3,7 +3,7 @@ package mongoctl
 import (
 	"strings"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 func LogCombinedLines(prefix string, log *logrus.Entry, data []byte) {

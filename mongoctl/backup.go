@@ -1,6 +1,7 @@
 package mongoctl
 
 import (
+	"fmt"
 	"github.com/juju/errors"
 	"github.com/urfave/cli"
 	"gopkg.in/pipe.v2"
@@ -44,8 +45,7 @@ func backup(ctx *cli.Context) error {
 	logger.Info("startup mongodump")
 
 	p := pipe.Script(
-		pipe.Exec("rm", "-rf", outDir),
-		pipe.MkDirAll(outDir, 0755),
+		pipe.Exec("rm", "-rf", fmt.Sprintf("%s/*", outDir)),		
 		pipe.Exec("/usr/bin/mongodump", "-h", res.Address, "-o", outDir),
 	)
 

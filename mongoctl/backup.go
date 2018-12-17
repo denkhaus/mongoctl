@@ -43,7 +43,7 @@ func backup(ctx *cli.Context) error {
 	logger.Infof("output directory is: %s", outDir)
 	logger.Info("startup mongodump")
 
-	p := pipe.Line(
+	p := pipe.Script(
 		pipe.Exec("rm", "-rf", outDir),
 		pipe.MkDirAll(outDir, 0755),
 		pipe.Exec("/usr/bin/mongodump", "-h", res.Address, "-o", outDir),

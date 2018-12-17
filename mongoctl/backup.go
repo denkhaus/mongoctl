@@ -25,7 +25,7 @@ var BackupCommand = cli.Command{
 			EnvVar: "MONGOCTL_BACKUP_FOLDER",
 		},
 		cli.StringFlag{
-			Name:   "db, d",
+			Name:   "db",
 			Value:  "",
 			Usage:  "database to backup",
 			EnvVar: "MONGOCTL_DB_TO_BACKUP",
